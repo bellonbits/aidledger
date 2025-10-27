@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Make Distribution - AidLedger{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-info text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-hand-holding-heart me-2"></i>Make Distribution</h3>
+                    <p class="mb-0 mt-2">Distribute aid to beneficiaries with full transparency</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Select Recipient</label>
+                            <select name="recipient_id" class="form-select" required>
+                                <option value="">Choose a recipient</option>
+                                {% for recipient in recipients %}
+                                <option value="{{ recipient.id }}">{{ recipient.name }} - {{ recipient.location }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Distribution Amount (AID)</label>
+                            <input type="number" name="amount" class="form-control" placeholder="Enter amount in AID tokens" min="1" step="1" required>
+                            <small class="form-text text-muted">Enter the amount of AidCoin tokens to distribute</small>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Distribution Process:</h6>
+                            <ul class="mb-0">
+                                <li>Distribution will be recorded on Hedera blockchain</li>
+                                <li>Provides complete transparency to donors</li>
+                                <li>Creates immutable record of aid delivery</li>
+                            </ul>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-info w-100 py-3 fw-semibold text-white">
+                            <i class="fas fa-paper-plane me-2"></i>Make Distribution
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'user_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block title %}AidLedger - Live Transparency Dashboard{% endblock %}
+
+{% block content %}
+<!-- Hero Banner -->
+<section class="hero-banner bg-primary text-white py-5">
+    <div class="container text-center">
+        <div class="live-badge bg-white text-dark">
+            <span class="live-dot"></span>
+            <span>Live Transparency Dashboard</span>
+        </div>
+        
+        <h1 class="display-4 mb-3 fw-bold">AidLedger</h1>
+        <p class="lead mb-4">Blockchain-Powered Transparency in Aid Distribution</p>
+        <p class="mb-4">Immutable, transparent, and accountable humanitarian aid tracking on Hedera Hashgraph</p>
+        
+        {% if not user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{% url 'register' %}" class="btn btn-light btn-lg me-3">
+                <i class="fas fa-rocket me-2"></i>Join Now
+            </a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon text-primary mb-3">
+                        <i class="fas fa-donate fa-3x"></i>
+                    </div>
+                    <div class="stat-number display-6 fw-bold text-primary">{{ stats.total_donations|default:"0" }}</div>
+                    <div class="stat-label text-muted">Total Donations (AID)</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon text-warning mb-3">
+                        <i class="fas fa-hand-holding-heart fa-3x"></i>
+                    </div>
+                    <div class="stat-number display-6 fw-bold text-warning">{{ stats.total_distributions|default:"0" }}</div>
+                    <div class="stat-label text-muted">Total Distributions (AID)</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon text-info mb-3">
+                        <i class="fas fa-users fa-3x"></i>
+                    </div>
+                    <div class="stat-number display-6 fw-bold text-info">{{ stats.total_donors|default:"0" }}</div>
+                    <div class="stat-label text-muted">Total Donors</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+                    <div class="stat-icon text-success mb-3">
+                        <i class="fas fa-building fa-3x"></i>
+                    </div>
+                    <div class="stat-number display-6 fw-bold text-success">{{ stats.total_ngos|default:"0" }}</div>
+                    <div class="stat-label text-muted">Active NGOs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Transactions -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <!-- Recent Donations -->
+            <div class="col-lg-6 mb-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-success text-white rounded p-3 me-3">
+                        <i class="fas fa-arrow-down fa-2x"></i>
+                    </div>
+                    <h3 class="mb-0">Recent Donations</h3>
+                </div>
+                
+                {% for donation in donations %}
+                <div class="transaction-card donation">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">{{ donation.donor.name }} → {{ donation.ngo.name }}</h6>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ donation.timestamp|date:"M d, Y H:i" }}
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success fs-6">{{ donation.amount }} AID</span>
+                            <br>
+                            <small class="text-muted font-monospace">{{ donation.txn_hash|truncatechars:12 }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No donations yet</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Recent Distributions -->
+            <div class="col-lg-6 mb-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-info text-white rounded p-3 me-3">
+                        <i class="fas fa-arrow-up fa-2x"></i>
+                    </div>
+                    <h3 class="mb-0">Recent Distributions</h3>
+                </div>
+                
+                {% for distribution in distributions %}
+                <div class="transaction-card distribution">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">{{ distribution.ngo.name }} → {{ distribution.recipient.name }}</h6>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ distribution.timestamp|date:"M d, Y H:i" }}
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-info fs-6">{{ distribution.amount }} AID</span>
+                            <br>
+                            <small class="text-muted font-monospace">{{ distribution.txn_hash|truncatechars:12 }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No distributions yet</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Why Choose AidLedger?</h2>
+            <p class="text-muted">Enterprise-grade blockchain technology for humanitarian aid</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="bg-primary text-white rounded-circle p-4 d-inline-flex mb-3">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <h5>Immutable Records</h5>
+                    <p class="text-muted">Every transaction permanently recorded on Hedera blockchain</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="bg-success text-white rounded-circle p-4 d-inline-flex mb-3">
+                        <i class="fas fa-eye fa-2x"></i>
+                    </div>
+                    <h5>Complete Transparency</h5>
+                    <p class="text-muted">Track donations from source to final beneficiary</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="bg-info text-white rounded-circle p-4 d-inline-flex mb-3">
+                        <i class="fas fa-bolt fa-2x"></i>
+                    </div>
+                    <h5>Instant Verification</h5>
+                    <p class="text-muted">Real-time transaction confirmation and validation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

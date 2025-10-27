@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Make Donation - AidLedger{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-donate me-2"></i>Make a Donation</h3>
+                    <p class="mb-0 mt-2">Support NGOs with transparent, blockchain-tracked donations</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Select NGO</label>
+                            <select name="ngo_id" class="form-select" required>
+                                <option value="">Choose an NGO to support</option>
+                                {% for ngo in ngos %}
+                                <option value="{{ ngo.id }}">{{ ngo.name }} - {{ ngo.region }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Donation Amount (AID)</label>
+                            <input type="number" name="amount" class="form-control" placeholder="Enter amount in AID tokens" min="1" step="1" required>
+                            <small class="form-text text-muted">Enter the amount of AidCoin tokens you wish to donate</small>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>How it works:</h6>
+                            <ul class="mb-0">
+                                <li>Your donation will be recorded on the Hedera blockchain</li>
+                                <li>Transaction will be permanently stored and verifiable</li>
+                                <li>Real-time transparency for all stakeholders</li>
+                            </ul>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success w-100 py-3 fw-semibold">
+                            <i class="fas fa-paper-plane me-2"></i>Make Donation
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'user_dashboard' %}" class="text-decoration-none">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

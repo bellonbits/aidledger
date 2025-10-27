@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - AidLedger{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-user-cog me-2"></i>Profile Settings</h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Account Information</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Username:</th>
+                                    <td>{{ user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Account Type:</th>
+                                    <td><span class="badge bg-primary">{{ custom_user.user_type|title }}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Phone:</th>
+                                    <td>{{ custom_user.phone_number|default:"Not provided" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Joined:</th>
+                                    <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5>Wallet Information</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Wallet ID:</th>
+                                    <td><code>{{ profile.wallet_id }}</code></td>
+                                </tr>
+                                {% if custom_user.user_type == 'donor' %}
+                                <tr>
+                                    <th>Total Donated:</th>
+                                    <td class="text-success fw-bold">{{ profile.total_donated }} AID</td>
+                                </tr>
+                                {% elif custom_user.user_type == 'ngo' %}
+                                <tr>
+                                    <th>Total Received:</th>
+                                    <td class="text-success fw-bold">{{ profile.total_received }} AID</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <h6><i class="fas fa-shield-alt me-2"></i>Blockchain Security</h6>
+                        <p class="mb-0 small text-muted">
+                            Your transactions are secured by Hedera Hashgraph, providing enterprise-grade 
+                            security and complete transparency. All activities are permanently recorded 
+                            on the blockchain.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
