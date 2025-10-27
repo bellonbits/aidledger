@@ -47,14 +47,14 @@ Create a `.env` file with your Hedera credentials:
 # Get these from portal.hedera.com
 
 # 🔐 Operator Credentials
-OPERATOR_ID=0.0.7124405
-OPERATOR_KEY=302e020100300506032b65700422042058cd811e4ffc35acac0a84f84f90646317bf99b0e0889ef1a0927d44daf5e48c
+OPERATOR_ID=0.0.....
+OPERATOR_KEY=yours
 
 # 📝 Transparency Topic (HCS) - Will be created automatically
-TOPIC_ID=0.0.7139041
+TOPIC_ID=0.0.....
 
 # 🪙 AidCoin Token (HTS) - Will be created automatically
-TOKEN_ID=0.0.7139042
+TOKEN_ID=0.0.....
 
 # 🌐 Network Configuration
 HEDERA_NETWORK=testnet
